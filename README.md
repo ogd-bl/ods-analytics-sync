@@ -1,22 +1,22 @@
 # ODS-ANALYTICS-SYNC
-This repository contains an Apache Airflow DAG to synchronize the ODS (Opendatasoft) monitoring tables with a local database. This is usefull if the usage of the Opendatasoft-Portal should be analyzed and backtraceable beyond the timerange limit of the ODS-contract.
+This repository contains an Apache Airflow DAG to synchronize the ODS (Opendatasoft) monitoring datasets with a local database. This is usefull if the usage of the Opendatasoft-Portal should be analyzed and backtraceable beyond the timerange limit of the ODS-contract.
 
 ## Getting Started
 
 ### Project Setup
-- **Setting Port**: Start an Aiflow service e.g. by using a Docker image the current DAG runs with the image apache/airflow:2.8.1 and postgres:14-alpine. Also set up a (postgres) database to store the tables and install the python libraries in the requirements file. 
+- **Setting Port**: Start an Aiflow service, e.g. by using a Docker image. The current DAG runs with the image `apache/airflow:2.8.1` and `postgres:14-alpine`. Also set up a (postgres) database to store the tables and install the python libraries in the `requirements.txt` file. 
 
 - **Environment Variables**: Rename `.env-example` to `.env` and set the parameters.
 
-- **Hardcoded Links**: ogd_web_analytics_utilities.py contains two constants `USER_DATA_API_URL` and `DATASETS_DATA_API_URL` that are hardcoded to point towards the monitoring endpoints of data.bl.ch. They have to be switched with the correct urls for your portal.
+- **Hardcoded Links**: `ogd_web_analytics_utilities.py` contains two constants `USER_DATA_API_URL` and `DATASETS_DATA_API_URL` that are hardcoded to point towards the monitoring endpoints of data.bl.ch. They have to be switched with the correct urls for your portal.
 
 
 ## DAGs
 
 ### OGD Web Analytics ETL
-> ogd_web_analytics_etl
+> `ogd_web_analytics_etl.py`
 
-The DAG is documented inline using md docs. Utility functions are loaded from ogd_web_analytics_utilities.py.
+The DAG is documented inline using [md docs](https://docs.astronomer.io/learn/custom-airflow-ui-docs-tutorial). Utility functions are loaded from `ogd_web_analytics_utilities.py`.
 
 The tables that need to exist are the following two, where user_actions contains data from the endpoint [portal]/api/explore/v2.1/monitoring/datasets/ods-api-monitoring and datasets contains data from the endpoint [portal]/api/explore/v2.1/monitoring/datasets/ods-datasets-monitoring
 
@@ -50,7 +50,7 @@ table ogd_analytics.datasets (
     visibility VARCHAR
 );
 ```
-It is advisable to cleanse the monitoring data before publishing as bots are not filtered out automatically and internal users may should be omitted. data.bl.ch uses the following two views to cleanse the raw data in the above tables. The views filter out usage from bots and logged in users, and creates a continuous date series with missing values if for some days no data is available.
+It is advisable to cleanse the monitoring data before publishing as bots are not filtered out automatically and internal users may should be omitted. data.bl.ch uses the following two views to cleanse the raw data in the above tables. The views filter out usage from bots and logged in users, and create continuous date series with missing values if for some days no data is available.
 
 ```sql
 CREATE OR REPLACE VIEW ogd_analytics.daily_external_user_dataset_interactions
@@ -89,7 +89,6 @@ AS WITH date_range AS (
      LEFT JOIN action_counts ac ON dr.date = ac.date
   ORDER BY dr.date;
 ```
-
 The sql script in dags>ogd>sql shows how the views can be accessed for synchronization with the portal.
 
 ## Contact
