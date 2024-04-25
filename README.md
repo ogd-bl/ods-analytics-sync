@@ -1,10 +1,10 @@
 # ODS-ANALYTICS-SYNC
-This repository contains an Apache Airflow DAG to synchronize the ODS (Opendatasoft) monitoring datasets with a local database. This is usefull if the usage of the Opendatasoft-Portal should be analyzed and backtraceable beyond the timerange limit of the ODS-contract.
+This repository contains an Apache Airflow DAG to synchronize the ODS (Opendatasoft) monitoring datasets with a local database. This is useful if the usage of the Opendatasoft-Portal should be analyzed and backtraceable beyond the timerange limit of the ODS-contract.
 
 ## Getting Started
 
 ### Project Setup
-- **Setting Port**: Start an Aiflow service, e.g. by using a Docker image. The current DAG runs with the image `apache/airflow:2.8.1` and `postgres:14-alpine`. Also set up a (postgres) database to store the tables and install the python libraries in the `requirements.txt` file. 
+- **Setting Port**: Start an Airflow service, e.g. by using a Docker image. The current DAG runs with the image `apache/airflow:2.8.1` and `postgres:14-alpine`. Also set up a (postgres) database to store the tables and install the python libraries in the `requirements.txt` file. 
 
 - **Environment Variables**: Rename `.env-example` to `.env` and set the parameters.
 
